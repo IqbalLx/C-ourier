@@ -1,0 +1,17 @@
+# CMake build directories
+/build/
+/CMakeFiles/
+CMakeCache.txt
+*.cmake
+
+# CMake generated files
+Makefile
+
+# DB Persistance Files
+db/*
+!db/.gitkeep
+
+# Compiled Build
+main
+migrator
+!migrator/
