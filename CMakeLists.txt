@@ -14,4 +14,5 @@ set(
 
 # Add the executable
 add_executable(migrator src/migrator/migrator.c src/helper/helper.c)
+add_executable(seeder src/migrator/seeder.c src/helper/helper.c)
 add_executable(main ${AUTH} src/helper/helper.c src/main.c)

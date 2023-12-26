@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 const char *decide_slash()
 {
@@ -46,4 +47,15 @@ void remove_new_line_char(char *str)
             break;         // Stop after the first newline is removed (if you want to remove all, remove this line)
         }
     }
+}
+
+char *get_current_datetime(char *datetime)
+{
+    time_t rawtime;
+    struct tm *info;
+
+    time(&rawtime);
+    info = localtime(&rawtime);
+
+    strftime(datetime, sizeof(datetime), "%Y-%m-%d %H:%M:%S", info);
 }

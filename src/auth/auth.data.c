@@ -72,7 +72,7 @@ void add_user(FILE *user_table, struct User *users, int *current_user_row, char 
     strncpy(users[*current_user_row].password, password, sizeof(users[*current_user_row].password) - 1);
     users[*current_user_row].password[sizeof(users[*current_user_row].password) - 1] = '\0';
 
-    fprintf(user_table, "\n%d,%s,%s,%s", users[*current_user_row].id, users[*current_user_row].name, users[*current_user_row].email, users[*current_user_row].password);
+    fprintf(user_table, "\n%d,%s,%s,%s,%s", users[*current_user_row].id, users[*current_user_row].name, users[*current_user_row].email, users[*current_user_row].password, "user");
 
     (*current_user_row)++;
 }

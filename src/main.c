@@ -25,23 +25,6 @@ void display_login()
     printf("Masukkan pilihan: ");
 }
 
-void display_menu(char user_name[255])
-{
-    char title[255] = "Selamat Datang ";
-    strcat(title, user_name);
-    strcat(title, " di Koperasi ITTS");
-
-    display_header(title);
-
-    printf("1. Input data koperasi\n");
-    printf("2. Data koperasi\n");
-    printf("3. Search data koperasi\n");
-    printf("4. Sort data koperasi\n");
-    printf("5. Keluar\n");
-
-    printf("Masukkan pilihan: ");
-}
-
 int main()
 {
 
