@@ -99,6 +99,7 @@ int main()
         case 3:
             fclose(users_table);
             fclose(delivery_types_table);
+            fclose(cities_table);
             return 0;
 
         default:
@@ -106,6 +107,7 @@ int main()
 
             fclose(users_table);
             fclose(delivery_types_table);
+            fclose(cities_table);
             return 0;
         }
 
@@ -115,6 +117,7 @@ int main()
 
     fclose(users_table);
     fclose(delivery_types_table);
+    fclose(cities_table);
 
     return 0;
 }
