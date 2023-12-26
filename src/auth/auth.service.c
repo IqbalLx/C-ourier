@@ -5,7 +5,7 @@
 #include "entity.h"
 #include "auth.h"
 
-int do_user_register(FILE *users_table, struct Item *users, int *current_user_row)
+int do_user_register(FILE *users_table, struct User *users, int *current_user_row)
 {
     if (*current_user_row == (MAX_USERS - 1))
     {
