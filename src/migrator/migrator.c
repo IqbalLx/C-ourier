@@ -81,7 +81,7 @@ void packages_table(char mode)
     struct Table package_table =
         {
             .name = "packages",
-            .column_length = 13,
+            .column_length = 14,
             .columns = {
                 "id",
                 "name",

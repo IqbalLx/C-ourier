@@ -3,6 +3,7 @@
 #include <stdlib.h>
 
 #include "entity.h"
+#include "helper.h"
 
 void load_delivery_types(FILE *delivery_types_table, struct DeliveryType *delivery_types)
 {
@@ -108,6 +109,143 @@ void load_cities(FILE *cities_table, struct City *cities)
         };
 
         city_index++;
+        row_index++;
+    }
+}
+
+void load_packages(FILE *packages_table, struct Package *packages, int *current_package_row)
+{
+    char row[255];
+    int row_index = 0;
+    while (fgets(row, sizeof(row), packages_table))
+    {
+        if (row_index == 0)
+        {
+            row_index++;
+            continue;
+        }
+
+        char *value = strtok(row, ",");
+        int col_index = 0;
+        while (value != NULL)
+        {
+            switch (col_index)
+            {
+            case 0:
+                packages[*current_package_row].id = atoi(value);
+                break;
+
+            case 1:
+                strncpy(packages[*current_package_row].name, value, sizeof(packages[*current_package_row].name) - 1);
+                packages[*current_package_row].name[sizeof(packages[*current_package_row].name) - 1] = '\0';
+                break;
+
+            case 2:
+                strncpy(packages[*current_package_row].sender_name, value, sizeof(packages[*current_package_row].sender_name) - 1);
+                packages[*current_package_row].sender_name[sizeof(packages[*current_package_row].sender_name) - 1] = '\0';
+                break;
+
+            case 3:
+                strncpy(packages[*current_package_row].sender_city, value, sizeof(packages[*current_package_row].sender_city) - 1);
+                packages[*current_package_row].sender_city[sizeof(packages[*current_package_row].sender_city) - 1] = '\0';
+                break;
+
+            case 4:
+                strncpy(packages[*current_package_row].receiver_name, value, sizeof(packages[*current_package_row].receiver_name) - 1);
+                packages[*current_package_row].receiver_name[sizeof(packages[*current_package_row].receiver_name) - 1] = '\0';
+                break;
+
+            case 5:
+                strncpy(packages[*current_package_row].receiver_city, value, sizeof(packages[*current_package_row].receiver_city) - 1);
+                packages[*current_package_row].receiver_city[sizeof(packages[*current_package_row].receiver_city) - 1] = '\0';
+                break;
+
+            case 6:
+                packages[*current_package_row].length = atoi(value);
+                break;
+
+            case 7:
+                packages[*current_package_row].width = atoi(value);
+                break;
+
+            case 8:
+                packages[*current_package_row].height = atoi(value);
+                break;
+
+            case 9:
+                packages[*current_package_row].weight = atoi(value);
+                break;
+
+            case 10:
+                strncpy(packages[*current_package_row].delivery_type, value, sizeof(packages[*current_package_row].delivery_type) - 1);
+                packages[*current_package_row].delivery_type[sizeof(packages[*current_package_row].delivery_type) - 1] = '\0';
+                break;
+
+            case 11:
+                packages[*current_package_row].distance = atof(value);
+                break;
+
+            case 12:
+                packages[*current_package_row].delivery_price = atoi(value);
+                break;
+
+            case 13:
+                strncpy(packages[*current_package_row].tracking_number, value, sizeof(packages[*current_package_row].tracking_number) - 1);
+                remove_new_line_char(&packages[*current_package_row].tracking_number);
+                break;
+            }
+
+            value = strtok(NULL, ",");
+            col_index++;
+        };
+
+        (*current_package_row)++;
+        row_index++;
+    }
+}
+
+void load_package_statuses(FILE *package_statuses_table, struct PackageStatus *package_statuses, int *current_package_status_row)
+{
+    char row[255];
+    int row_index = 0;
+    while (fgets(row, sizeof(row), package_statuses_table))
+    {
+        if (row_index == 0)
+        {
+            row_index++;
+            continue;
+        }
+
+        char *value = strtok(row, ",");
+        int col_index = 0;
+        while (value != NULL)
+        {
+            switch (col_index)
+            {
+            case 0:
+                package_statuses[*current_package_status_row].id = atoi(value);
+                break;
+
+            case 1:
+                package_statuses[*current_package_status_row].package_id = atoi(value);
+                break;
+
+            case 2:
+                strncpy(package_statuses[*current_package_status_row].status, value, sizeof(package_statuses[*current_package_status_row].status) - 1);
+                package_statuses[*current_package_status_row].status[sizeof(package_statuses[*current_package_status_row].status) - 1] = '\0';
+                break;
+
+            case 3:
+                strncpy(package_statuses[*current_package_status_row].timestamp, value, sizeof(package_statuses[*current_package_status_row].timestamp) - 1);
+                remove_new_line_char(&package_statuses[*current_package_status_row].timestamp);
+                break;
+            }
+
+            value = strtok(NULL, ",");
+            col_index++;
+        };
+
+        (*current_package_status_row)++;
         row_index++;
     }
 }

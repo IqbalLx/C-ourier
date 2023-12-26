@@ -3,6 +3,7 @@
 
 #define MAX_USERS 10
 #define MAX_PACKAGES 100
+#define MAX_PACKAGE_STATUSES 500
 #define COUNT_DELIVERY_TYPES 4
 #define COUNT_CITIES 10
 
@@ -28,7 +29,7 @@ struct Package
     int height;
     int weight;
     char delivery_type[255];
-    int distance;
+    float distance;
     int delivery_price;
     char tracking_number[255];
 };

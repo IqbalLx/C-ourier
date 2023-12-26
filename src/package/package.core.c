@@ -29,3 +29,37 @@ void diplay_cities(struct City *cities)
         printf("\n");
     }
 }
+
+void display_packages(struct Package *packages, int *current_package_row)
+{
+    for (int i = 0; i < *current_package_row; ++i)
+    {
+        printf("Package ID: %d\n", packages[i].id);
+        printf("Name: %s\n", packages[i].name);
+        printf("Sender Name: %s\n", packages[i].sender_name);
+        printf("Sender City: %s\n", packages[i].sender_city);
+        printf("Receiver Name: %s\n", packages[i].receiver_name);
+        printf("Receiver City: %s\n", packages[i].receiver_city);
+        printf("Length: %d\n", packages[i].length);
+        printf("Width: %d\n", packages[i].width);
+        printf("Height: %d\n", packages[i].height);
+        printf("Weight: %d\n", packages[i].weight);
+        printf("Delivery Type: %s\n", packages[i].delivery_type);
+        printf("Distance: %f\n", packages[i].distance);
+        printf("Delivery Price: %d\n", packages[i].delivery_price);
+        printf("Tracking Number: %s\n", packages[i].tracking_number);
+        printf("\n");
+    }
+}
+
+void display_package_statuses(struct PackageStatus *package_statuses, int *current_package_status_row)
+{
+    for (int i = 0; i < *current_package_status_row; ++i)
+    {
+        printf("Status ID: %d\n", package_statuses[i].id);
+        printf("Package ID: %d\n", package_statuses[i].package_id);
+        printf("Status: %s\n", package_statuses[i].status);
+        printf("Timestamp: %s\n", package_statuses[i].timestamp);
+        printf("\n");
+    }
+}

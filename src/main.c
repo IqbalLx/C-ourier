@@ -65,6 +65,26 @@ int main()
     load_cities(cities_table, cities);
     // End of Init City Table
 
+    // Start of Init Packages Table
+    FILE *packages_table;
+    open_database_table("packages", &packages_table);
+
+    struct Package packages[MAX_PACKAGES];
+    int current_package_row = 0;
+
+    load_packages(packages_table, packages, &current_package_row);
+    // End of Init Packages Table
+
+    // Start of Init Package Statuses Table
+    FILE *package_statuses_table;
+    open_database_table("package_statuses", &package_statuses_table);
+
+    struct PackageStatus package_statuses[MAX_PACKAGE_STATUSES];
+    int current_package_status_row = 0;
+
+    load_package_statuses(package_statuses_table, package_statuses, &current_package_status_row);
+    // End of Init Package Statuses Table
+
     struct User current_logged_in_user;
     int answer;
 
@@ -100,6 +120,9 @@ int main()
             fclose(users_table);
             fclose(delivery_types_table);
             fclose(cities_table);
+            fclose(packages_table);
+            fclose(package_statuses_table);
+
             return 0;
 
         default:
@@ -108,6 +131,9 @@ int main()
             fclose(users_table);
             fclose(delivery_types_table);
             fclose(cities_table);
+            fclose(packages_table);
+            fclose(package_statuses_table);
+
             return 0;
         }
 
@@ -118,6 +144,8 @@ int main()
     fclose(users_table);
     fclose(delivery_types_table);
     fclose(cities_table);
+    fclose(packages_table);
+    fclose(package_statuses_table);
 
     return 0;
 }
