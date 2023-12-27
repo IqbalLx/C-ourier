@@ -49,7 +49,7 @@ void remove_new_line_char(char *str)
     }
 }
 
-char get_current_datetime(char *datetime)
+char get_current_datetime(char *datetime, size_t buffer_size)
 {
     time_t rawtime;
     struct tm *info;
@@ -57,7 +57,7 @@ char get_current_datetime(char *datetime)
     time(&rawtime);
     info = localtime(&rawtime);
 
-    strftime(datetime, sizeof(datetime), "%Y-%m-%d %H:%M:%S", info);
+    strftime(datetime, buffer_size, "%Y-%m-\%d %H:%M:\%S", info);
 }
 
 char generate_random_string(char *string)

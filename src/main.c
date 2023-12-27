@@ -36,6 +36,57 @@ void display_login()
     printf("Masukkan pilihan: ");
 }
 
+void display_greeting(struct User *user)
+{
+    char greet[255] = "Halo, ";
+    strcat(greet, (*user).name);
+    strcat(greet, "! Pilih menu sebagai ");
+    strcat(greet, (*user).role);
+    strcat(greet, " berikut");
+    display_header(greet);
+}
+
+void display_user_main_menu(struct User *user)
+{
+    display_greeting(user);
+
+    printf("1. Kirim Paket\n");
+    printf("2. Lacak Paket\n");
+    printf("3. Logout\n");
+
+    printf("Masukkan pilihan: ");
+}
+
+void user_main_menu(struct User *user,
+                    struct DeliveryType *delivery_types, struct City *cities,
+                    FILE *packages_table, struct Package *packages, int *current_package_row,
+                    FILE *package_statuses_table, struct PackageStatus *package_statuses, int *current_package_status_row)
+{
+    int answer;
+    while (1)
+    {
+        display_user_main_menu(user);
+        scanf("%i", &answer);
+
+        switch (answer)
+        {
+
+        case 1:
+            do_add_new_package(packages_table, packages, current_package_row,
+                               package_statuses_table, package_statuses, current_package_status_row,
+                               cities, delivery_types);
+            break;
+
+        case 3:
+            return;
+
+        default:
+            printf("Input tidak valid.\n");
+            break;
+        }
+    }
+}
+
 int main()
 {
 
@@ -138,7 +189,22 @@ int main()
         }
 
         if (is_login_success)
-            break;
+        {
+            int is_admin = strcmp(current_logged_in_user.role, "admin") == 0;
+            if (is_admin)
+            {
+                printf("ini admin");
+            }
+            else
+            {
+                user_main_menu(&current_logged_in_user, delivery_types,
+                               cities, packages_table,
+                               packages, &current_package_row,
+                               package_statuses_table,
+                               package_statuses,
+                               &current_package_status_row);
+            }
+        }
     }
 
     fclose(users_table);

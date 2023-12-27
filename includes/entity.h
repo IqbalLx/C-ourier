@@ -29,7 +29,7 @@ struct Package
     int height;
     int weight;
     char delivery_type[255];
-    float distance;
+    double distance;
     int delivery_price;
     char tracking_number[255];
 };

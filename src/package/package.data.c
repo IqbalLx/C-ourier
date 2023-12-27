@@ -249,3 +249,25 @@ void load_package_statuses(FILE *package_statuses_table, struct PackageStatus *p
         row_index++;
     }
 }
+
+void add_new_package(FILE *packages_table, struct Package *packages, int *current_package_row,
+                     FILE *package_statuses_table, struct PackageStatus *package_statuses, int *current_package_status_row,
+                     struct Package package, struct PackageStatus package_status)
+{
+    // Update data in memory
+    packages[*current_package_row] = package;
+    package_statuses[*current_package_status_row] = package_status;
+
+    // Persists both data
+    fprintf(packages_table, "\n%d,%s,%s,%s,%s,%s,%d,%d,%d,%d,%s,%f,%d,%s",
+            package.id, package.name, package.sender_name,
+            package.sender_city, package.receiver_name, package.receiver_city,
+            package.length, package.width, package.height, package.weight,
+            package.delivery_type, package.distance, package.delivery_price,
+            package.tracking_number);
+    fprintf(package_statuses_table, "\n%d,%d,%s,%s", package_status.id, package_status.package_id,
+            package_status.status, package_status.timestamp);
+
+    (*current_package_row)++;
+    (*current_package_status_row)++;
+}

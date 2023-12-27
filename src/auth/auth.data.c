@@ -39,7 +39,12 @@ void load_users(FILE *users_table, struct User *users, int *current_user_row)
 
             case 3:
                 strncpy(users[*current_user_row].password, value, sizeof(users[*current_user_row].password) - 1);
-                remove_new_line_char(&users[*current_user_row].password);
+                users[*current_user_row].password[sizeof(users[*current_user_row].password) - 1] = '\0';
+                break;
+
+            case 4:
+                strncpy(users[*current_user_row].role, value, sizeof(users[*current_user_row].role) - 1);
+                remove_new_line_char(&users[*current_user_row].role);
                 break;
             }
 
