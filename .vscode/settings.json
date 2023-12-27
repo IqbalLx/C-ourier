@@ -2,6 +2,11 @@
   "files.associations": {
     "ctime": "c",
     "typeinfo": "c",
-    "__locale": "c"
+    "__locale": "c",
+    "__bit_reference": "c",
+    "bitset": "c",
+    "unordered_map": "c",
+    "entity.h": "c",
+    "package.h": "c"
   }
 }

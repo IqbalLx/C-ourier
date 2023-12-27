@@ -196,3 +196,87 @@ void insertion_sort_display_delivery_type_by_eta(struct DisplayDeliveryType *arr
         arr[j + 1] = key;
     }
 }
+
+int sequential_search_packages_by_tracking_number(struct Package *packages, int *current_package_row, char tracking_number[255])
+{
+    for (int i = 0; i < *current_package_row; i++)
+    {
+        struct Package curr_package = packages[i];
+        int is_match = strcmp(curr_package.tracking_number, tracking_number) == 0;
+        if (is_match)
+        {
+            return i;
+        }
+    }
+
+    return -1;
+}
+
+struct FilteredPackageStatus filter_package_status_by_package_id(struct PackageStatus *package_statuses, int *current_package_status_row, int package_id)
+{
+    struct PackageStatus filtered_package_statuses[10];
+    int filtered_package_status_index = 0;
+    for (int i = 0; i < *current_package_status_row; i++)
+    {
+        struct PackageStatus curr_package_status = package_statuses[i];
+        if (curr_package_status.package_id == package_id)
+        {
+            filtered_package_statuses[filtered_package_status_index] = curr_package_status;
+            filtered_package_status_index++;
+        }
+    }
+
+    struct FilteredPackageStatus res =
+        {
+            .count = filtered_package_status_index,
+            .data = filtered_package_statuses,
+        };
+
+    return res;
+}
+
+void quick_sort_descending_package_status_by_id(struct PackageStatus *arr, int low, int high)
+{
+    if (low < high)
+    {
+        int pivot = arr[high].id;
+        int i = (low - 1);
+
+        for (int j = low; j <= high - 1; j++)
+        {
+            if (arr[j].id > pivot)
+            {
+                i++;
+                struct PackageStatus temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
+            }
+        }
+
+        struct PackageStatus temp = arr[i + 1];
+        arr[i + 1] = arr[high];
+        arr[high] = temp;
+
+        int partition_id = i + 1;
+        quick_sort_descending_package_status_by_id(arr, low, partition_id - 1);
+        quick_sort_descending_package_status_by_id(arr, partition_id + 1, high);
+    }
+}
+
+void display_package_status(struct Package package, struct PackageStatus *package_statuses, int length)
+{
+    printf("\nNama Paket: %s\n", package.name);
+    printf("%s (%s) ->-> %s (%s)\n", package.sender_city, package.sender_name, package.receiver_city, package.receiver_name);
+
+    printf("\nStatus Terakhir: %s\n", package_statuses[0].status);
+    printf("Terakhir Diperbaharui: %s\n\n", package_statuses[0].timestamp);
+
+    printf("Riwayat status: \n\n");
+    for (int i = 0; i < length; i++)
+    {
+        printf(" | \n");
+        printf("[*] %s", package_statuses[i].status);
+        printf(" - %s \n", package_statuses[i].timestamp);
+        printf(" | \n");
+    }
+}

@@ -77,6 +77,12 @@ void user_main_menu(struct User *user,
                                cities, delivery_types);
             break;
 
+        case 2:
+            do_track_package(
+                packages, current_package_row,
+                package_statuses, current_package_status_row);
+            break;
+
         case 3:
             return;
 

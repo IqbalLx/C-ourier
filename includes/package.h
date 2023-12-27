@@ -10,6 +10,11 @@ struct DisplayDeliveryType
     int eta_hours;
     int price;
 };
+struct FilteredPackageStatus
+{
+    int count;
+    struct PackageStatus *data;
+};
 
 // Data
 void load_delivery_types(FILE *delivery_types_table, struct DeliveryType *delivery_types);
@@ -33,11 +38,18 @@ int calc_price(struct DeliveryType delivery_type, int volume, int weight, double
 void swap_display_delivery_type(struct DisplayDeliveryType *x, struct DisplayDeliveryType *y);
 void bubble_sort_display_delivery_type_by_price(struct DisplayDeliveryType *arr, int is_ascending, int arr_length);
 void insertion_sort_display_delivery_type_by_eta(struct DisplayDeliveryType *arr, int is_ascending, int arr_length);
+int sequential_search_packages_by_tracking_number(struct Package *packages, int *current_package_row, char tracking_number[255]);
+struct FilteredPackageStatus filter_package_status_by_package_id(struct PackageStatus *package_statuses, int *current_package_status_row, int package_id);
+void quick_sort_descending_package_status_by_id(struct PackageStatus *arr, int low, int high);
+void display_package_status(struct Package package, struct PackageStatus *package_statuses, int length);
 
 // Service
 struct DisplayDeliveryType select_delivery_type(struct DeliveryType *delivery_types, int volume, int weight, double distance);
 void do_add_new_package(FILE *packages_table, struct Package *packages, int *current_package_row,
                         FILE *package_statuses_table, struct PackageStatus *package_statuses, int *current_package_status_row,
                         struct City *cities, struct DeliveryType *delivery_types);
+void do_track_package(
+    struct Package *packages, int *current_package_row,
+    struct PackageStatus *package_statuses, int *current_package_status_row);
 
 #endif

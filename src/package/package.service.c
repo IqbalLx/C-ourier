@@ -170,3 +170,26 @@ void do_add_new_package(FILE *packages_table, struct Package *packages, int *cur
     printf("\n\nPaket anda dengan nomor resi %s, sudah kami terima.\nSilahkan lacak berkala untuk mengetahui status paket\n\n",
            this_package.tracking_number);
 }
+
+void do_track_package(
+    struct Package *packages, int *current_package_row,
+    struct PackageStatus *package_statuses, int *current_package_status_row)
+{
+    char tracking_number[255];
+    printf("Masukkan nomor resi: ");
+    scanf("%s", &tracking_number);
+
+    int package_index = sequential_search_packages_by_tracking_number(packages, current_package_row, tracking_number);
+
+    if (package_index == -1)
+    {
+        printf("Nomor resi tidak dapat ditemukan!\n");
+        return;
+    }
+
+    struct Package package = packages[package_index];
+    struct FilteredPackageStatus filtered_package_status = filter_package_status_by_package_id(package_statuses, current_package_status_row, package.id);
+    quick_sort_descending_package_status_by_id(filtered_package_status.data, 0, filtered_package_status.count - 1);
+
+    display_package_status(package, filtered_package_status.data, filtered_package_status.count);
+}
