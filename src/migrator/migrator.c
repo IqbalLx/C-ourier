@@ -43,7 +43,7 @@ void create_table(struct Table table)
 
 void drop_table(struct Table table)
 {
-    char filepath[255] = "./databases/";
+    char filepath[255] = "./db/";
     strcat(filepath, table.name);
     strcat(filepath, ".csv");
 
@@ -59,8 +59,14 @@ void users_table(char mode)
     struct Table user_table =
         {
             .name = "users",
-            .column_length = 4,
-            .columns = {"id", "name", "email", "password"},
+            .column_length = 5,
+            .columns = {
+                "id",
+                "name",
+                "email",
+                "password",
+                "role",
+            },
         };
 
     if (mode == 'c')
@@ -69,10 +75,110 @@ void users_table(char mode)
         drop_table(user_table);
 }
 
+// Packages
+void packages_table(char mode)
+{
+    struct Table package_table =
+        {
+            .name = "packages",
+            .column_length = 14,
+            .columns = {
+                "id",
+                "name",
+                "sender_name",
+                "sender_city",
+                "receiver_name",
+                "receiver_city",
+                "length",
+                "width",
+                "height",
+                "weight",
+                "delivery_type",
+                "distance",
+                "delivery_price",
+                "tracking_number",
+            },
+        };
+
+    if (mode == 'c')
+        create_table(package_table);
+    else
+        drop_table(package_table);
+}
+
+void package_statuses_table(char mode)
+{
+    struct Table package_status_table =
+        {
+            .name = "package_statuses",
+            .column_length = 4,
+            .columns = {
+                "id",
+                "package_id",
+                "status",
+                "timestamp",
+            },
+        };
+
+    if (mode == 'c')
+        create_table(package_status_table);
+    else
+        drop_table(package_status_table);
+}
+
+// Delivery Types
+void delivery_types_table(char mode)
+{
+    struct Table delivery_type =
+        {
+            .name = "delivery_types",
+            .column_length = 8,
+            .columns = {
+                "id",
+                "name",
+                "distance_price",
+                "weight_volume_price",
+                "eta_hours",
+                "max_distance",
+                "max_volume",
+                "max_weight",
+            },
+        };
+
+    if (mode == 'c')
+        create_table(delivery_type);
+    else
+        drop_table(delivery_type);
+}
+
+// Cities
+void cities_table(char mode)
+{
+    struct Table cities_table =
+        {
+            .name = "cities",
+            .column_length = 4,
+            .columns = {
+                "id",
+                "name",
+                "longitude",
+                "latitude",
+            },
+        };
+
+    if (mode == 'c')
+        create_table(cities_table);
+    else
+        drop_table(cities_table);
+}
+
 void do_migrate_or_rollback(char mode)
 {
     users_table(mode);
-    items_table(mode);
+    packages_table(mode);
+    package_statuses_table(mode);
+    delivery_types_table(mode);
+    cities_table(mode);
 }
 
 int main(int argc, char *argv[])

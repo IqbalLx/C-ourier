@@ -12,6 +12,14 @@ set(
     src/auth/auth.service.c
 )
 
+set(
+    PACKAGE
+    src/package/package.data.c 
+    src/package/package.core.c 
+    src/package/package.service.c
+)
+
 # Add the executable
 add_executable(migrator src/migrator/migrator.c src/helper/helper.c)
-add_executable(main ${AUTH} src/helper/helper.c src/main.c)
+add_executable(seeder src/migrator/seeder.c src/helper/helper.c)
+add_executable(main ${AUTH} ${PACKAGE} src/helper/helper.c src/main.c)

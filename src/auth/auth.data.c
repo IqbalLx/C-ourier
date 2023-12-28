@@ -39,7 +39,12 @@ void load_users(FILE *users_table, struct User *users, int *current_user_row)
 
             case 3:
                 strncpy(users[*current_user_row].password, value, sizeof(users[*current_user_row].password) - 1);
-                remove_new_line_char(&users[*current_user_row].password);
+                users[*current_user_row].password[sizeof(users[*current_user_row].password) - 1] = '\0';
+                break;
+
+            case 4:
+                strncpy(users[*current_user_row].role, value, sizeof(users[*current_user_row].role) - 1);
+                remove_new_line_char(&users[*current_user_row].role);
                 break;
             }
 
@@ -72,7 +77,7 @@ void add_user(FILE *user_table, struct User *users, int *current_user_row, char 
     strncpy(users[*current_user_row].password, password, sizeof(users[*current_user_row].password) - 1);
     users[*current_user_row].password[sizeof(users[*current_user_row].password) - 1] = '\0';
 
-    fprintf(user_table, "\n%d,%s,%s,%s", users[*current_user_row].id, users[*current_user_row].name, users[*current_user_row].email, users[*current_user_row].password);
+    fprintf(user_table, "\n%d,%s,%s,%s,%s", users[*current_user_row].id, users[*current_user_row].name, users[*current_user_row].email, users[*current_user_row].password, "user");
 
     (*current_user_row)++;
 }

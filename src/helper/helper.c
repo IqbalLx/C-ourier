@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 const char *decide_slash()
 {
@@ -46,4 +47,29 @@ void remove_new_line_char(char *str)
             break;         // Stop after the first newline is removed (if you want to remove all, remove this line)
         }
     }
+}
+
+char get_current_datetime(char *datetime, size_t buffer_size)
+{
+    time_t rawtime;
+    struct tm *info;
+
+    time(&rawtime);
+    info = localtime(&rawtime);
+
+    strftime(datetime, buffer_size, "%Y-%m-\%d %H:%M:\%S", info);
+}
+
+char generate_random_string(char *string)
+{
+    static const char charset[] = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    int charset_length = sizeof(charset) - 1;
+
+    srand((unsigned int)time(NULL));
+
+    for (int i = 0; i < 8; ++i)
+    {
+        string[i] = charset[rand() % charset_length];
+    }
+    string[8] = '\0';
 }
