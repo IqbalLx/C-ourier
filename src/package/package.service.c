@@ -193,3 +193,15 @@ void do_track_package(
 
     display_package_status(package, filtered_package_status.data, filtered_package_status.count);
 }
+
+void do_display_packages_list(struct Package *packages, int *current_package_row){
+    // yon
+};
+
+void do_display_package_detail(struct Package *packages, int *current_package_row, struct PackageStatus *package_statuses, int *current_package_status_row){
+    // ayu
+};
+
+void do_update_package_status(FILE *package_statuses_table, struct PackageStatus *package_statuses, int *current_package_status_row){
+    // iqbal
+};

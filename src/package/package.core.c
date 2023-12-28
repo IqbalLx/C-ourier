@@ -265,7 +265,7 @@ void quick_sort_descending_package_status_by_id(struct PackageStatus *arr, int l
 
 void display_package_status(struct Package package, struct PackageStatus *package_statuses, int length)
 {
-    printf("\nNama Paket: %s\n", package.name);
+    printf("\nNama Paket: %s [%s]\n", package.name, package.tracking_number);
     printf("%s (%s) ->-> %s (%s)\n", package.sender_city, package.sender_name, package.receiver_city, package.receiver_name);
 
     printf("\nStatus Terakhir: %s\n", package_statuses[0].status);

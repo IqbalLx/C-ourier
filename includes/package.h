@@ -51,5 +51,8 @@ void do_add_new_package(FILE *packages_table, struct Package *packages, int *cur
 void do_track_package(
     struct Package *packages, int *current_package_row,
     struct PackageStatus *package_statuses, int *current_package_status_row);
+void do_display_packages_list(struct Package *packages, int *current_package_row);
+void do_display_package_detail(struct Package *packages, int *current_package_row, struct PackageStatus *package_statuses, int *current_package_status_row);
+void do_update_package_status(FILE *package_statuses_table, struct PackageStatus *package_statuses, int *current_package_status_row);
 
 #endif

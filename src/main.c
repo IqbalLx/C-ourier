@@ -57,6 +57,18 @@ void display_user_main_menu(struct User *user)
     printf("Masukkan pilihan: ");
 }
 
+void display_admin_main_menu(struct User *user)
+{
+    display_greeting(user);
+
+    printf("1. Lihat Semua Paket\n");
+    printf("2. Lihat Detail Paket\n");
+    printf("3. Update Status Paket\n");
+    printf("4. Logout\n");
+
+    printf("Masukkan pilihan: ");
+}
+
 void user_main_menu(struct User *user,
                     struct DeliveryType *delivery_types, struct City *cities,
                     FILE *packages_table, struct Package *packages, int *current_package_row,
@@ -84,6 +96,36 @@ void user_main_menu(struct User *user,
             break;
 
         case 3:
+            return;
+
+        default:
+            printf("Input tidak valid.\n");
+            break;
+        }
+    }
+}
+
+void admin_main_menu(
+    struct User *user, struct Package *packages, int *current_package_row,
+    FILE *package_statuses_table, struct PackageStatus *package_statuses, int *current_package_status_row)
+{
+    int answer;
+    while (1)
+    {
+        display_admin_main_menu(user);
+        scanf("%i", &answer);
+
+        switch (answer)
+        {
+        case 1:
+            do_display_packages_list(packages, current_package_row);
+            break;
+
+        case 2:
+            do_display_package_detail(packages, current_package_row, package_statuses, current_package_status_row);
+            break;
+
+        case 4:
             return;
 
         default:
@@ -199,7 +241,11 @@ int main()
             int is_admin = strcmp(current_logged_in_user.role, "admin") == 0;
             if (is_admin)
             {
-                printf("ini admin");
+                admin_main_menu(&current_logged_in_user,
+                                packages, &current_package_row,
+                                package_statuses_table,
+                                package_statuses,
+                                &current_package_status_row);
             }
             else
             {
@@ -210,6 +256,9 @@ int main()
                                package_statuses,
                                &current_package_status_row);
             }
+
+            // reset login state after main user session
+            is_login_success = 0;
         }
     }
 
