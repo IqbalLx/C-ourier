@@ -77,7 +77,11 @@ void add_user(FILE *user_table, struct User *users, int *current_user_row, char 
     strncpy(users[*current_user_row].password, password, sizeof(users[*current_user_row].password) - 1);
     users[*current_user_row].password[sizeof(users[*current_user_row].password) - 1] = '\0';
 
-    fprintf(user_table, "\n%d,%s,%s,%s,%s", users[*current_user_row].id, users[*current_user_row].name, users[*current_user_row].email, users[*current_user_row].password, "user");
+    char default_role[5] = "user";
+    strncpy(users[*current_user_row].role, default_role, sizeof(users[*current_user_row].role) - 1);
+    users[*current_user_row].role[sizeof(users[*current_user_row].role) - 1] = '\0';
+
+    fprintf(user_table, "\n%d,%s,%s,%s,%s", users[*current_user_row].id, users[*current_user_row].name, users[*current_user_row].email, users[*current_user_row].password, default_role);
 
     (*current_user_row)++;
 }
