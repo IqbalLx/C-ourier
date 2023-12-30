@@ -264,6 +264,80 @@ void quick_sort_descending_package_status_by_id(struct PackageStatus *arr, int l
     }
 }
 
+void merge(struct PackageStatus *arr, int low, int mid, int high)
+{
+    int leftSize = mid - low + 1;
+    int rightSize = high - mid;
+
+    struct PackageStatus left[leftSize];
+    struct PackageStatus right[rightSize];
+
+    for (int i = 0; i < leftSize; i++)
+        left[i] = arr[low + i];
+    for (int j = 0; j < rightSize; j++)
+        right[j] = arr[mid + 1 + j];
+
+    int i = 0, j = 0, k = low;
+
+    while (i < leftSize && j < rightSize)
+    {
+        if (left[i].id >= right[j].id)
+        {
+            arr[k] = left[i];
+            i++;
+        }
+        else
+        {
+            arr[k] = right[j];
+            j++;
+        }
+        k++;
+    }
+
+    while (i < leftSize)
+    {
+        arr[k] = left[i];
+        i++;
+        k++;
+    }
+
+    while (j < rightSize)
+    {
+        arr[k] = right[j];
+        j++;
+        k++;
+    }
+}
+
+void merge_sort_descending_package_status_by_id(struct PackageStatus *arr, int low, int high)
+{
+    if (low < high)
+    {
+        int mid = low + (high - low) / 2;
+
+        merge_sort_descending_package_status_by_id(arr, low, mid);
+        merge_sort_descending_package_status_by_id(arr, mid + 1, high);
+
+        merge(arr, low, mid, high);
+    }
+}
+
+void insertion_sort_descending_package_status_by_id(struct PackageStatus arr[], int size)
+{
+    for (int i = 1; i < size; i++)
+    {
+        struct PackageStatus key = arr[i];
+        int j = i - 1;
+
+        while (j >= 0 && arr[j].id < key.id)
+        {
+            arr[j + 1] = arr[j];
+            j = j - 1;
+        }
+        arr[j + 1] = key;
+    }
+}
+
 void display_package_status(struct Package package, struct PackageStatus *package_statuses, int length)
 {
     printf("\nNama Paket: %s [%s]\n", package.name, package.tracking_number);

@@ -189,7 +189,7 @@ void do_track_package(
 
     struct Package package = packages[package_index];
     struct FilteredPackageStatus filtered_package_status = filter_package_status_by_package_id(package_statuses, current_package_status_row, package.id);
-    quick_sort_descending_package_status_by_id(filtered_package_status.data, 0, filtered_package_status.count - 1);
+    insertion_sort_descending_package_status_by_id(filtered_package_status.data, filtered_package_status.count);
 
     display_package_status(package, filtered_package_status.data, filtered_package_status.count);
 }
@@ -228,8 +228,7 @@ void do_display_package_detail(struct Package *packages, int *current_package_ro
 
     struct Package package = packages[package_index];
     struct FilteredPackageStatus filtered_package_status = filter_package_status_by_package_id(package_statuses, current_package_status_row, package.id);
-
-    quick_sort_descending_package_status_by_id(filtered_package_status.data, 0, filtered_package_status.count - 1);
+    insertion_sort_descending_package_status_by_id(filtered_package_status.data, filtered_package_status.count);
 
     display_package_status(package, filtered_package_status.data, filtered_package_status.count);
 };
