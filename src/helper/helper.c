@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <ctype.h>
 
 const char *decide_slash()
 {
@@ -32,6 +33,7 @@ void open_database_table(char name[255], FILE **table)
         exit(1);
     }
 
+    setlinebuf(*table);
     fseek(*table, 0, SEEK_SET);
 }
 
@@ -72,4 +74,40 @@ char generate_random_string(char *string)
         string[i] = charset[rand() % charset_length];
     }
     string[8] = '\0';
+}
+
+void remove_word_from_string(char *str, const char *word_to_remove)
+{
+    char *found = strstr(str, word_to_remove); // Find the word in the string
+    while (found)
+    {
+        memmove(found, found + strlen(word_to_remove), strlen(found + strlen(word_to_remove)) + 1);
+        found = strstr(str, word_to_remove); // Find next occurrence
+    }
+}
+
+void trim_space(char *str)
+{
+    int start = 0, end = strlen(str) - 1;
+
+    // Trim spaces from the start
+    while (isspace((unsigned char)str[start]))
+    {
+        start++;
+    }
+
+    // Trim spaces from the end
+    while (end >= start && isspace((unsigned char)str[end]))
+    {
+        end--;
+    }
+
+    // Shift characters to the start of the string
+    for (int i = 0; i <= end - start; i++)
+    {
+        str[i] = str[start + i];
+    }
+
+    // Null-terminate the trimmed string
+    str[end - start + 1] = '\0';
 }

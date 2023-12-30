@@ -4,6 +4,7 @@
 
 #include "entity.h"
 #include "package.h"
+#include "helper.h"
 
 void show_delivery_types(struct DisplayDeliveryType *display_delivery_types, int valid_delivery_type)
 {
@@ -279,4 +280,129 @@ void display_package_status(struct Package package, struct PackageStatus *packag
         printf(" - %s \n", package_statuses[i].timestamp);
         printf(" | \n");
     }
+}
+
+int binary_search_package_by_id(struct Package *packages, int *current_package_row, int package_id)
+{
+    int left = 0;
+    int right = (*current_package_row) - 1;
+
+    while (left <= right)
+    {
+        int mid = left + (right - left) / 2;
+        if (packages[mid].id == package_id)
+            return mid;
+
+        if (packages[mid].id < package_id)
+            left = mid + 1;
+        else
+            right = mid - 1;
+    }
+
+    return -1;
+}
+
+void decide_next_status(struct Package package, char curr_package_status[255], char *next_package_status, size_t next_package_status_size)
+{
+    char status_instant_sameday[STATUS_INSTANT_SAMEDAY_COUNT][255] = {
+        "Diterima oleh C-Ourier",
+        "Diantar oleh Kurir",
+        "Paket Diterima Oleh",
+    };
+
+    char status_nextday_regular[STATUS_NEXTDAY_REGULAR_COUNT][255] = {
+        "Diterima oleh C-Ourier",
+        "Sampai di Gudang",
+        "Menuju Gudang",
+        "Diterima di Gudang",
+        "Diantar oleh Kurir",
+        "Paket Diterima oleh",
+    };
+
+    // clean current status
+    remove_word_from_string(curr_package_status, package.sender_city);
+    remove_word_from_string(curr_package_status, package.receiver_city);
+    remove_word_from_string(curr_package_status, package.receiver_name);
+    trim_space(curr_package_status);
+
+    int curr_package_status_idx;
+    int is_package_instant_sameday = (strcmp(package.delivery_type, "Instant") == 0 ||
+                                      strcmp(package.delivery_type, "Same Day") == 0);
+
+    // Instant or Same day
+
+    if (is_package_instant_sameday)
+    {
+
+        for (int i = 0; i < STATUS_INSTANT_SAMEDAY_COUNT; i++)
+        {
+            int is_match = strcmp(status_instant_sameday[i], curr_package_status) == 0;
+            if (is_match)
+            {
+                curr_package_status_idx = i;
+                break;
+            }
+        }
+
+        strncpy(next_package_status, status_instant_sameday[curr_package_status_idx + 1], next_package_status_size - 1);
+        next_package_status[next_package_status_size - 1] = "\0";
+
+        int is_received_status = strcmp(next_package_status, "Paket Diterima Oleh") == 0;
+        if (is_received_status)
+        {
+            strcat(next_package_status, " ");
+            strcat(next_package_status, package.receiver_name);
+        }
+
+        return;
+    }
+
+    // Next Day and regular
+
+    for (int i = 0; i < STATUS_NEXTDAY_REGULAR_COUNT; ++i)
+    {
+        int is_match = strcmp(status_nextday_regular[i], curr_package_status) == 0;
+        if (is_match)
+        {
+            curr_package_status_idx = i;
+            break;
+        }
+    }
+
+    strncpy(next_package_status, status_nextday_regular[curr_package_status_idx + 1], next_package_status_size - 1);
+    next_package_status[next_package_status_size - 1] = "\0";
+
+    // Sampai di Gudang
+    int is_received_in_orig_warehouse_status = strcmp(next_package_status, "Sampai di Gudang") == 0;
+    if (is_received_in_orig_warehouse_status)
+    {
+        strcat(next_package_status, " ");
+        strcat(next_package_status, package.sender_city);
+    }
+
+    // Menuju Gudang
+    int is_gone_to_dest_warehouse_status = strcmp(next_package_status, "Menuju Gudang") == 0;
+    if (is_gone_to_dest_warehouse_status)
+    {
+        strcat(next_package_status, " ");
+        strcat(next_package_status, package.receiver_city);
+    }
+
+    // Diterima di Gudang
+    int is_received_in_dest_warehouse_status = strcmp(next_package_status, "Diterima di Gudang") == 0;
+    if (is_received_in_dest_warehouse_status)
+    {
+        strcat(next_package_status, " ");
+        strcat(next_package_status, package.receiver_city);
+    }
+
+    // Paket Diterima oleh
+    int is_received = strcmp(next_package_status, "Paket Diterima oleh") == 0;
+    if (is_received)
+    {
+        strcat(next_package_status, " ");
+        strcat(next_package_status, package.receiver_name);
+    }
+
+    return;
 }

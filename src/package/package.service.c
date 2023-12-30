@@ -194,20 +194,119 @@ void do_track_package(
     display_package_status(package, filtered_package_status.data, filtered_package_status.count);
 }
 
-void do_display_packages_list(struct Package *packages, int *current_package_row) {
-     // Menampilkan header
-    printf("%-5s %-30s %-20s %-15s\n", "ID", "Nama Paket", "Pengirim", "Nomor Pelacakan");
-    printf("---------------------------------------------------------------\n");
+void do_display_packages_list(struct Package *packages, int *current_package_row)
+{
+    // Menampilkan header
+    printf("%-5s %-30s %-20s %-15s\n", "ID", "Nama Paket", "Pengirim", "Nomor Resi");
+    printf("--------------------------------------------------------------------------\n");
 
     // Menampilkan setiap paket menggunakan perulangan
-    for (int i = 0; i <*current_package_row; i++) {
+    for (int i = 0; i < *current_package_row; i++)
+    {
         printf("%-5d %-30s %-20s %-15s\n", packages[i].id, packages[i].name, packages[i].sender_name, packages[i].tracking_number);
-};
+    };
 };
 void do_display_package_detail(struct Package *packages, int *current_package_row, struct PackageStatus *package_statuses, int *current_package_status_row){
     // ayu
 };
 
-void do_update_package_status(FILE *package_statuses_table, struct PackageStatus *package_statuses, int *current_package_status_row){
-    // iqbal
+void do_update_package_status(FILE *package_statuses_table, struct PackageStatus *package_statuses, int *current_package_status_row,
+                              struct Package *packages, int *current_package_row)
+{
+    int answer, package_id;
+    char tracking_number[255];
+
+    int is_decided = 0;
+    while (!is_decided)
+    {
+        printf("1. Gunakan ID paket\n");
+        printf("2. Gunakan nomor resi\n");
+        printf("Masukkan Pilihan: ");
+        scanf("%d", &answer);
+
+        switch (answer)
+        {
+        case 1:
+            printf("Masukkan ID paket: ");
+            scanf("%d", &package_id);
+
+            if (package_id < 1 && package_id >= *current_package_status_row)
+            {
+                printf("Masukan ID paket tidak valid!\n");
+                break;
+            }
+
+            is_decided = 1;
+            break;
+
+        case 2:
+            printf("Masukkan nomor resi: ");
+            scanf("%s", &tracking_number);
+
+            is_decided = 1;
+            break;
+
+        default:
+            printf("Pilihan tidak valid!\n");
+            break;
+        }
+    }
+
+    int package_index;
+    if (answer == 1)
+    {
+        package_index = binary_search_package_by_id(packages, current_package_row, package_id);
+    }
+    else
+    {
+        package_index = sequential_search_packages_by_tracking_number(packages, current_package_row, tracking_number);
+    }
+
+    if (package_index == -1)
+    {
+        printf("Paket tidak ditemukan!");
+        return;
+    }
+
+    struct Package package = packages[package_index];
+    struct FilteredPackageStatus filtered_package_status = filter_package_status_by_package_id(package_statuses, current_package_status_row, package.id);
+
+    int is_package_instant_sameday = (strcmp(package.delivery_type, "Instant") == 0 ||
+                                      strcmp(package.delivery_type, "Same Day") == 0);
+    if (is_package_instant_sameday)
+    {
+        if (filtered_package_status.count == STATUS_INSTANT_SAMEDAY_COUNT)
+        {
+            printf("Paket telah selesai diantar.");
+            return;
+        }
+    }
+    else
+    {
+        if (filtered_package_status.count == STATUS_NEXTDAY_REGULAR_COUNT)
+        {
+            printf("Paket telah selesai diantar.");
+            return;
+        }
+    }
+
+    quick_sort_descending_package_status_by_id(filtered_package_status.data, 0, filtered_package_status.count - 1);
+
+    char next_status[255];
+    decide_next_status(package, filtered_package_status.data[0].status, &next_status, sizeof(next_status));
+
+    struct PackageStatus next_package_status = {
+        .id = (*current_package_status_row) + 1,
+        .package_id = package.id,
+    };
+    get_current_datetime(next_package_status.timestamp, sizeof(next_package_status.timestamp));
+
+    strncpy(next_package_status.status, next_status, sizeof(next_package_status.status) - 1);
+    next_package_status.status[sizeof(next_package_status.status) - 1] = "\0";
+
+    add_new_package_status(package_statuses_table, package_statuses, current_package_status_row, next_package_status);
+
+    printf("\nBerhasil mengupdate status paket!");
+
+    return;
 };

@@ -125,6 +125,10 @@ void admin_main_menu(
             do_display_package_detail(packages, current_package_row, package_statuses, current_package_status_row);
             break;
 
+        case 3:
+            do_update_package_status(package_statuses_table, package_statuses, current_package_status_row, packages, current_package_row);
+            break;
+
         case 4:
             return;
 
