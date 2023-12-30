@@ -194,15 +194,17 @@ void do_track_package(
     display_package_status(package, filtered_package_status.data, filtered_package_status.count);
 }
 
-void do_display_packages_list(struct Package *packages, int *current_package_row) {
-     // Menampilkan header
-    printf("%-5s %-30s %-20s %-15s\n", "ID", "Nama Paket", "Pengirim", "Nomor Pelacakan");
-    printf("---------------------------------------------------------------\n");
+void do_display_packages_list(struct Package *packages, int *current_package_row)
+{
+    // Menampilkan header
+    printf("%-5s %-30s %-20s %-15s\n", "ID", "Nama Paket", "Pengirim", "Nomor Resi");
+    printf("--------------------------------------------------------------------------\n");
 
     // Menampilkan setiap paket menggunakan perulangan
-    for (int i = 0; i <*current_package_row; i++) {
+    for (int i = 0; i < *current_package_row; i++)
+    {
         printf("%-5d %-30s %-20s %-15s\n", packages[i].id, packages[i].name, packages[i].sender_name, packages[i].tracking_number);
-};
+    };
 };
 void do_display_package_detail(struct Package *packages, int *current_package_row, struct PackageStatus *package_statuses, int *current_package_status_row){
     // ayu
