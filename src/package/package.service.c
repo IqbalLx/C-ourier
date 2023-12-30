@@ -206,8 +206,32 @@ void do_display_packages_list(struct Package *packages, int *current_package_row
         printf("%-5d %-30s %-20s %-15s\n", packages[i].id, packages[i].name, packages[i].sender_name, packages[i].tracking_number);
     };
 };
-void do_display_package_detail(struct Package *packages, int *current_package_row, struct PackageStatus *package_statuses, int *current_package_status_row){
-    // ayu
+
+void do_display_package_detail(struct Package *packages, int *current_package_row, struct PackageStatus *package_statuses, int *current_package_status_row)
+{
+    int package_id;
+    printf("Masukkan ID paket: ");
+    scanf("%d", &package_id);
+
+    if (package_id < 1 && package_id >= *current_package_status_row)
+    {
+        printf("Masukan ID paket tidak valid!\n");
+        return;
+    }
+
+    int package_index = binary_search_package_by_id(packages, current_package_row, package_id);
+    if (package_index == -1)
+    {
+        printf("Paket tidak dapat ditemukan!\n");
+        return;
+    }
+
+    struct Package package = packages[package_index];
+    struct FilteredPackageStatus filtered_package_status = filter_package_status_by_package_id(package_statuses, current_package_status_row, package.id);
+
+    quick_sort_descending_package_status_by_id(filtered_package_status.data, 0, filtered_package_status.count - 1);
+
+    display_package_status(package, filtered_package_status.data, filtered_package_status.count);
 };
 
 void do_update_package_status(FILE *package_statuses_table, struct PackageStatus *package_statuses, int *current_package_status_row,
