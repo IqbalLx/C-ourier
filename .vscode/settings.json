@@ -7,6 +7,16 @@
     "bitset": "c",
     "unordered_map": "c",
     "entity.h": "c",
-    "package.h": "c"
+    "package.h": "c",
+    "__node_handle": "c",
+    "atomic": "c",
+    "__memory": "c",
+    "limits": "c",
+    "locale": "c",
+    "optional": "c",
+    "ratio": "c",
+    "system_error": "c",
+    "tuple": "c",
+    "vector": "c"
   }
 }

@@ -271,3 +271,14 @@ void add_new_package(FILE *packages_table, struct Package *packages, int *curren
     (*current_package_row)++;
     (*current_package_status_row)++;
 }
+
+void add_new_package_status(
+    FILE *package_statuses_table, struct PackageStatus *package_statuses, int *current_package_status_row,
+    struct PackageStatus package_status)
+{
+    package_statuses[*current_package_status_row] = package_status;
+    fprintf(package_statuses_table, "\n%d,%d,%s,%s", package_status.id, package_status.package_id,
+            package_status.status, package_status.timestamp);
+
+    (*current_package_status_row)++;
+}
