@@ -56,6 +56,10 @@ void load_delivery_types(FILE *delivery_types_table, struct DeliveryType *delive
             case 7:
                 delivery_types[delivery_type_index].max_weight = atoi(value);
                 break;
+
+            case 8:
+                delivery_types[delivery_type_index].base_price = atoi(value);
+                break;
             }
 
             value = strtok(NULL, ",");

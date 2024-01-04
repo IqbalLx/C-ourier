@@ -126,7 +126,7 @@ int calc_price(struct DeliveryType delivery_type, int volume, int weight, double
     int weight_volume_price = weight_or_volume * delivery_type.weight_volume_price;
     int distance_price = ceil(distance * delivery_type.distance_price);
 
-    return weight_volume_price + distance_price;
+    return delivery_type.base_price + weight_volume_price + distance_price;
 }
 
 void swap_display_delivery_type(struct DisplayDeliveryType *x, struct DisplayDeliveryType *y)
@@ -340,7 +340,7 @@ void insertion_sort_descending_package_status_by_id(struct PackageStatus arr[], 
 
 void display_package_status(struct Package package, struct PackageStatus *package_statuses, int length)
 {
-    printf("\nNama Paket: %s [%s]\n", package.name, package.tracking_number);
+    printf("\nNama Paket: %s [%s - %s]\n", package.name, package.tracking_number, package.delivery_type);
     printf("%s (%s) ->-> %s (%s)\n", package.sender_city, package.sender_name, package.receiver_city, package.receiver_name);
 
     printf("\nStatus Terakhir: %s\n", package_statuses[0].status);

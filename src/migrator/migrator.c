@@ -132,7 +132,7 @@ void delivery_types_table(char mode)
     struct Table delivery_type =
         {
             .name = "delivery_types",
-            .column_length = 8,
+            .column_length = 9,
             .columns = {
                 "id",
                 "name",
@@ -142,6 +142,7 @@ void delivery_types_table(char mode)
                 "max_distance",
                 "max_volume",
                 "max_weight",
+                "base_price",
             },
         };
 

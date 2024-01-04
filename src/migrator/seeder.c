@@ -52,7 +52,8 @@ void seed_delivery_types()
                 .max_volume = 5000,
                 .max_weight = 20,
                 .distance_price = 2500,
-                .weight_volume_price = 1000,
+                .weight_volume_price = 10000,
+                .base_price = 10000,
             },
             {
                 .id = 2,
@@ -62,7 +63,8 @@ void seed_delivery_types()
                 .max_volume = 5000,
                 .max_weight = 20,
                 .distance_price = 2000,
-                .weight_volume_price = 800,
+                .weight_volume_price = 8000,
+                .base_price = 8000,
             },
             {
                 .id = 3,
@@ -72,7 +74,8 @@ void seed_delivery_types()
                 .max_volume = 15000,
                 .max_weight = 30,
                 .distance_price = 1000,
-                .weight_volume_price = 500,
+                .weight_volume_price = 5000,
+                .base_price = 5000,
             },
             {
                 .id = 4,
@@ -82,14 +85,15 @@ void seed_delivery_types()
                 .max_volume = 30000,
                 .max_weight = 50,
                 .distance_price = 500,
-                .weight_volume_price = 300,
+                .weight_volume_price = 3000,
+                .base_price = 5000,
             },
         };
 
     for (int i = 0; i < delivery_type_seed_length; i++)
     {
         struct DeliveryType delivery_type = delivery_type_seeds[i];
-        fprintf(delivery_types_table, "\n%d,%s,%d,%d,%d,%d,%d,%d", delivery_type.id, delivery_type.name, delivery_type.distance_price, delivery_type.weight_volume_price, delivery_type.eta_hours, delivery_type.max_distance, delivery_type.max_volume, delivery_type.max_weight);
+        fprintf(delivery_types_table, "\n%d,%s,%d,%d,%d,%d,%d,%d,%d", delivery_type.id, delivery_type.name, delivery_type.distance_price, delivery_type.weight_volume_price, delivery_type.eta_hours, delivery_type.max_distance, delivery_type.max_volume, delivery_type.max_weight, delivery_type.base_price);
     }
 
     fclose(delivery_types_table);

@@ -46,6 +46,7 @@ struct DeliveryType
 {
     int id;
     char name[255];
+    int base_price;
     int distance_price;
     int weight_volume_price;
     int eta_hours;
